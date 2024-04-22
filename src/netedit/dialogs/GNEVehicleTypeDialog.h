@@ -344,6 +344,44 @@ public:
         /// @brief VTypeAttributeRow for Impatience
         VTypeAttributeRow* myJMImpatience;
 
+        //csy start
+        /// @brief VTypeAttributeRow for Maximum Visual distance (meter)
+        VTypeAttributeRow* myJMVisualDistMaxM;
+
+        /// @brief VTypeAttributeRow for Minimum Visual distance (meter)
+        VTypeAttributeRow* myJMVisualDistMinM;
+
+        /// @brief VTypeAttributeRow for Visual speed references (km/h)
+        VTypeAttributeRow* myJMVisualAngleAheadVsSpeedRefsKMHDEG;
+
+        /// @brief VTypeAttributeRow for back left visual angle (degree)
+        VTypeAttributeRow* myJMVisualAngleBackLeftDEG;
+
+        /// @brief VTypeAttributeRow for back right visual angle (degree)
+        VTypeAttributeRow* myJMVisualAngleBackRightDEG;
+
+        /// @brief VTypeAttributeRow for whether the vehicle type is equipped with blind spot detector (true or false)
+        VTypeAttributeRow* myJMVisualHasBSD;
+
+        /// @brief VTypeAttributeRow for whether the vehicle type is signal sender (true or false)
+        VTypeAttributeRow* myJMSignalIsSender;
+
+        /// @brief VTypeAttributeRow for whether the vehicle type is signal receiver (true or false)
+        VTypeAttributeRow* myJMSignalIsReceiver;
+
+        /// @brief VTypeAttributeRow for signal packet loss prob w.r.t. distance (meter) references
+        VTypeAttributeRow* myJMSignalPackLossProbVsDistRefsM;
+
+        /// @brief VTypeAttributeRow for conflict prediction error prob w.r.t. time (second) references
+        VTypeAttributeRow* myJMSignalPredErrProbVsTimeRefsS;
+
+        /// @brief VTypeAttributeRow for the TTC threshold that triggers the warning system
+        VTypeAttributeRow* myJMSignalTriggerTTC;
+
+        /// @brief VTypeAttributeRow for option: communication is between two vehicle (VBS/BPTV) or vehicle and intersection (INS)
+        VTypeAttributeRow* myJMSignalCommV2V2I;
+        //csy end
+
         /// @}
 
 

@@ -82,6 +82,14 @@ public:
 
     double getSlope() const;
 
+    // csy start
+    /** @brief Return random seed for this vehicle in this simulation step
+    */
+    double getRandStep() const {
+        return RandHelper::rand(getRNG());
+    }
+    // csy end
+
     SUMOVehicleClass getVClass() const;
 
     /// @brief whether the transportable (persons) is jammed as defined by the current pedestrian model

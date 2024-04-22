@@ -3285,7 +3285,7 @@ MSVehicle::checkLinkLeader(const MSLink* link, const MSLane* lane, double seen,
         gDebugFlag1 = true;    // See MSLink::getLeaderInfo
     }
 #endif
-    const MSLink::LinkLeaders linkLeaders = link->getLeaderInfo(this, seen, nullptr, isShadowLink);
+    const MSLink::LinkLeaders linkLeaders = link->getLeaderInfoCustom(this, seen, nullptr, isShadowLink);
 #ifdef DEBUG_PLAN_MOVE_LEADERINFO
     if (DEBUG_COND) {
         gDebugFlag1 = false;    // See MSLink::getLeaderInfo

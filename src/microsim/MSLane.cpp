@@ -1466,6 +1466,13 @@ MSLane::planMovements(SUMOTime t) {
             std::cout << " leaders=" << leaders.toString() << "\n";
         }
 #endif
+        // csy start
+        (*veh)->randStepUpdate();
+        /*WRITE_MESSAGE("vehicle id " + (*veh)->getID() + ": Step random value 1: " + std::to_string((*veh)->getRandStep())
+        + "; Step random value 2: " + std::to_string((*veh)->getRandStep())
+        + "; Lane seed generated random value 1: " + std::to_string(RandHelper::rand((*veh)->getRNG()))
+        + "; Lane seed generated random value 2:" + std::to_string(RandHelper::rand((*veh)->getRNG())));*/
+        // csy end
         (*veh)->planMove(t, leaders, cumulatedVehLength); // 4800ns with 8 threads, 3100 with 1
         cumulatedVehLength += (*veh)->getVehicleType().getLengthWithGap();
         leaders.addLeader(*veh, false, 0);
@@ -2819,7 +2826,7 @@ MSLane::getLeaderOnConsecutive(double dist, double seen, double speed, const MSV
         }
         // check for link leaders
         const bool laneChanging = veh.getLane() != this;
-        const MSLink::LinkLeaders linkLeaders = (*link)->getLeaderInfo(&veh, seen);
+        const MSLink::LinkLeaders linkLeaders = (*link)->getLeaderInfoCustom(&veh, seen);
         nextLane->releaseVehicles();
         if (linkLeaders.size() > 0) {
             std::pair<MSVehicle*, double> result;
@@ -2921,7 +2928,7 @@ MSLane::getCriticalLeader(double dist, double seen, double speed, const MSVehicl
             gDebugFlag1 = true;    // See MSLink::getLeaderInfo
         }
 #endif
-        const MSLink::LinkLeaders linkLeaders = (*link)->getLeaderInfo(&veh, seen);
+        const MSLink::LinkLeaders linkLeaders = (*link)->getLeaderInfoCustom(&veh, seen);
 #ifdef DEBUG_CONTEXT
         if (DEBUG_COND2(&veh)) {
             gDebugFlag1 = false;    // See MSLink::getLeaderInfo
@@ -3678,7 +3685,7 @@ MSLane::getFollowersOnConsecutive(const MSVehicle* ego, double backOffset,
                     // check for junction foes that would interfere with lane changing
                     // @note: we are passing the back of ego as its front position so
                     //        we need to add this back to the returned gap
-                    const MSLink::LinkLeaders linkLeaders = (*it).viaLink->getLeaderInfo(ego, -backOffset);
+                    const MSLink::LinkLeaders linkLeaders = (*it).viaLink->getLeaderInfoCustom(ego, -backOffset);
                     for (const auto& ll : linkLeaders) {
                         if (ll.vehAndGap.first != nullptr) {
                             const bool egoIsLeader = ll.vehAndGap.first->isLeader((*it).viaLink, ego, ll.vehAndGap.second);
@@ -3823,7 +3830,7 @@ MSLane::getLeadersOnConsecutive(double dist, double seen, double speed, const MS
                 break;
             }
             // check for link leaders
-            const MSLink::LinkLeaders linkLeaders = (*link)->getLeaderInfo(ego, seen);
+            const MSLink::LinkLeaders linkLeaders = (*link)->getLeaderInfoCustom(ego, seen);
             if (linkLeaders.size() > 0) {
                 const MSLink::LinkLeader ll = linkLeaders[0];
                 MSVehicle* veh = ll.vehAndGap.first;

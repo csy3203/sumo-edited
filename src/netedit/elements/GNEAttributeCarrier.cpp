@@ -5376,6 +5376,80 @@ GNEAttributeCarrier::fillJunctionModelAttributes(SumoXMLTag currentTag) {
                                           TL("Willingess of drivers to impede vehicles with higher priority"),
                                           "0.0");
     myTagProperties[currentTag].addAttribute(attrProperty);
+
+    //csy start
+    attrProperty = GNEAttributeProperties(SUMO_ATTR_JM_VISUAL_DIST_MAX_M,
+                                          GNEAttributeProperties::FLOAT | GNEAttributeProperties::DEFAULTVALUE | GNEAttributeProperties::EXTENDED,
+                                          "This value exclude the vehicles and pedestrians that can be perceived at junctions by ego vehicle if the distance is greater than defined value",
+                                          "-1");
+    myTagProperties[currentTag].addAttribute(attrProperty);
+
+    attrProperty = GNEAttributeProperties(SUMO_ATTR_JM_VISUAL_DIST_MIN_M,
+                                          GNEAttributeProperties::FLOAT | GNEAttributeProperties::DEFAULTVALUE | GNEAttributeProperties::EXTENDED,
+                                          "This value exclude the vehicles and pedestrians that can be perceived at junctions by ego vehicle if the distance is less than defined value",
+                                          "-1");
+    myTagProperties[currentTag].addAttribute(attrProperty);
+
+    attrProperty = GNEAttributeProperties(SUMO_ATTR_JM_VISUAL_ANGLE_AHEAD_VS_SPEED_REF_KMH_DEG,
+                                          GNEAttributeProperties::STRING | GNEAttributeProperties::DEFAULTVALUE | GNEAttributeProperties::EXTENDED,
+                                          "The series of speed (km/h) and angle(degree) reference values are 1-by-1 corresponding to each other in format v1,a1;v2,a2;...",
+                                          "");
+    myTagProperties[currentTag].addAttribute(attrProperty);
+
+    attrProperty = GNEAttributeProperties(SUMO_ATTR_JM_VISUAL_ANGLES_BACK_LEFT_DEG,
+                                          GNEAttributeProperties::FLOAT | GNEAttributeProperties::DEFAULTVALUE | GNEAttributeProperties::EXTENDED,
+                                          "The left visual angle (degree) backward by mirror is a single value",
+                                          "-1");
+    myTagProperties[currentTag].addAttribute(attrProperty);
+
+    attrProperty = GNEAttributeProperties(SUMO_ATTR_JM_VISUAL_ANGLES_BACK_RIGHT_DEG,
+                                          GNEAttributeProperties::FLOAT | GNEAttributeProperties::DEFAULTVALUE | GNEAttributeProperties::EXTENDED,
+                                          "The right visual angle (degree) backward by mirror is a single value",
+                                          "-1");
+    myTagProperties[currentTag].addAttribute(attrProperty);
+
+    attrProperty = GNEAttributeProperties(SUMO_ATTR_JM_VISUAL_HAS_BSD,
+                                          GNEAttributeProperties::BOOL | GNEAttributeProperties::DEFAULTVALUE | GNEAttributeProperties::EXTENDED,
+                                          "Whether this type of vehicle is equipped with blind spot detector",
+                                          "false");
+    myTagProperties[currentTag].addAttribute(attrProperty);
+
+    attrProperty = GNEAttributeProperties(SUMO_ATTR_JM_SIGNAL_IS_SENDER,
+                                          GNEAttributeProperties::BOOL | GNEAttributeProperties::DEFAULTVALUE | GNEAttributeProperties::EXTENDED,
+                                          "Whether this type of vehicle is a signal sender",
+                                          "false");
+    myTagProperties[currentTag].addAttribute(attrProperty);
+
+    attrProperty = GNEAttributeProperties(SUMO_ATTR_JM_SIGNAL_IS_RECEIVER,
+                                          GNEAttributeProperties::BOOL | GNEAttributeProperties::DEFAULTVALUE | GNEAttributeProperties::EXTENDED,
+                                          "Whether this type of vehicle is a signal receiver",
+                                          "false");
+    myTagProperties[currentTag].addAttribute(attrProperty);
+
+    attrProperty = GNEAttributeProperties(SUMO_ATTR_JM_SIGNAL_PACK_LOSS_PROB_VS_DIST_REF_M,
+                                          GNEAttributeProperties::STRING | GNEAttributeProperties::DEFAULTVALUE | GNEAttributeProperties::EXTENDED,
+                                          "The series of distance (meter) and packet loss probability reference values are 1-by-1 corresponding to each other in format d1,p1;d2,p2;...",
+                                          "");
+    myTagProperties[currentTag].addAttribute(attrProperty);
+
+    attrProperty = GNEAttributeProperties(SUMO_ATTR_JM_SIGNAL_PRED_ERR_PROB_VS_TIME_REF_S,
+                                          GNEAttributeProperties::STRING | GNEAttributeProperties::DEFAULTVALUE | GNEAttributeProperties::EXTENDED,
+                                          "The series of time (second) and prediction error probability reference values are 1-by-1 corresponding to each other in format t1,p1;t2,p2;...",
+                                          "");
+    myTagProperties[currentTag].addAttribute(attrProperty);
+
+    attrProperty = GNEAttributeProperties(SUMO_ATTR_JM_SIGNAL_TRIG_TTC,
+                                          GNEAttributeProperties::FLOAT | GNEAttributeProperties::DEFAULTVALUE | GNEAttributeProperties::EXTENDED,
+                                          "the TTC threshold that triggers the warning system of VBS, BPTV and INS",
+                                          "3.0");
+    myTagProperties[currentTag].addAttribute(attrProperty);
+
+    attrProperty = GNEAttributeProperties(SUMO_ATTR_JM_SIGNAL_COMM_V2V_V2I,
+                                          GNEAttributeProperties::STRING | GNEAttributeProperties::DEFAULTVALUE | GNEAttributeProperties::EXTENDED,
+                                          "option: communication is between two vehicle (VBS/BPTV) or vehicle and intersection (INS)",
+                                          "V2V");
+    myTagProperties[currentTag].addAttribute(attrProperty);
+    //csy end
 }
 
 

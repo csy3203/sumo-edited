@@ -625,6 +625,20 @@ StringBijection<int>::Entry SUMOXMLDefinitions::attrs[] = {
     { "jmTimegapMinor",         SUMO_ATTR_JM_TIMEGAP_MINOR },
     { "junctionModel.ignoreIDs", SUMO_ATTR_JM_IGNORE_IDS },
     { "junctionModel.ignoreTypes", SUMO_ATTR_JM_IGNORE_TYPES },
+    //csy start
+    { "jmVMaxDistM", SUMO_ATTR_JM_VISUAL_DIST_MAX_M },
+    { "jmVMinDistM", SUMO_ATTR_JM_VISUAL_DIST_MIN_M },
+    { "jmVAngleBackLeftDEG", SUMO_ATTR_JM_VISUAL_ANGLES_BACK_LEFT_DEG },
+    { "jmVAngleBackRightDEG", SUMO_ATTR_JM_VISUAL_ANGLES_BACK_RIGHT_DEG },
+    { "jmVAngleAheadVsSpeedRefsKMH", SUMO_ATTR_JM_VISUAL_ANGLE_AHEAD_VS_SPEED_REF_KMH_DEG },
+    { "jmVHasBlindSpotDetector", SUMO_ATTR_JM_VISUAL_HAS_BSD },
+    { "jmSIsSender", SUMO_ATTR_JM_SIGNAL_IS_SENDER },
+    { "jmSIsReceiver", SUMO_ATTR_JM_SIGNAL_IS_RECEIVER },
+    { "jmSPackLossProbVsDistRefsM", SUMO_ATTR_JM_SIGNAL_PACK_LOSS_PROB_VS_DIST_REF_M },
+    { "jmSPredErrProbVsTimeRefsS", SUMO_ATTR_JM_SIGNAL_PRED_ERR_PROB_VS_TIME_REF_S },
+    { "jmSTriggerTTC", SUMO_ATTR_JM_SIGNAL_TRIG_TTC },
+    { "jmSCommType", SUMO_ATTR_JM_SIGNAL_COMM_V2V_V2I },
+    //csy end
 
     { "last",                   SUMO_ATTR_LAST },
     { "cost",                   SUMO_ATTR_COST },

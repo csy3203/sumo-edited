@@ -769,6 +769,32 @@ GNEVehicleTypeDialog::VTypeAttributes::VTypeAttributeRow::filterAttributeName(co
             return "sigmaMinor";
         case SUMO_ATTR_JM_TIMEGAP_MINOR:
             return "timegapMinor";
+        //csy start
+        case SUMO_ATTR_JM_VISUAL_DIST_MAX_M:
+            return "VDistMaxM";
+        case SUMO_ATTR_JM_VISUAL_DIST_MIN_M:
+            return "VDistMinM";
+        case SUMO_ATTR_JM_VISUAL_ANGLE_AHEAD_VS_SPEED_REF_KMH_DEG:
+            return "VAngleAheadVsSpeedRefsKMH";
+        case SUMO_ATTR_JM_VISUAL_ANGLES_BACK_LEFT_DEG:
+            return "VAngleBackLeftDEG";
+        case SUMO_ATTR_JM_VISUAL_ANGLES_BACK_RIGHT_DEG:
+            return "VAngleBackRightDEG";
+        case SUMO_ATTR_JM_VISUAL_HAS_BSD:
+            return "VHasBSD";
+        case SUMO_ATTR_JM_SIGNAL_IS_SENDER:
+            return "SIsSender";
+        case SUMO_ATTR_JM_SIGNAL_IS_RECEIVER:
+            return "SIsReceiver";
+        case SUMO_ATTR_JM_SIGNAL_PACK_LOSS_PROB_VS_DIST_REF_M:
+            return "SPackLossProbVsDistM";
+        case SUMO_ATTR_JM_SIGNAL_PRED_ERR_PROB_VS_TIME_REF_S:
+            return "SPredErrProbVsTimeS";
+        case SUMO_ATTR_JM_SIGNAL_TRIG_TTC:
+            return "STriggerTTC";
+        case SUMO_ATTR_JM_SIGNAL_COMM_V2V_V2I:
+            return "SCommV2V2I";
+        //csy end
         // LCM
         case SUMO_ATTR_LCA_STRATEGIC_PARAM:
             return "strategic";
@@ -961,6 +987,26 @@ GNEVehicleTypeDialog::VTypeAttributes::buildJunctionModelAttributesA(FXVerticalF
 
     // 05 create VTypeAttributeRow and Label for JMDriveRedSpeed
     myJMDriveRedSpeed = new VTypeAttributeRow(this, column, SUMO_ATTR_JM_DRIVE_RED_SPEED, VTypeAttributeRow::RowAttrType::ROWTYPE_STRING);
+
+    //csy start
+    // 06 create VTypeAttributeRow and Label for JMVisualDistMinM
+    myJMVisualDistMinM = new VTypeAttributeRow(this, column, SUMO_ATTR_JM_VISUAL_DIST_MIN_M, VTypeAttributeRow::RowAttrType::ROWTYPE_STRING);
+
+    // 07 create VTypeAttributeRow and Label for JMVisualAngleBackLeftDEG
+    myJMVisualAngleBackLeftDEG = new VTypeAttributeRow(this, column, SUMO_ATTR_JM_VISUAL_ANGLES_BACK_LEFT_DEG, VTypeAttributeRow::RowAttrType::ROWTYPE_STRING);
+
+    // 08 create VTypeAttributeRow and Label for JMVisualSpeedRefKMH
+    myJMVisualAngleAheadVsSpeedRefsKMHDEG = new VTypeAttributeRow(this, column, SUMO_ATTR_JM_VISUAL_ANGLE_AHEAD_VS_SPEED_REF_KMH_DEG, VTypeAttributeRow::RowAttrType::ROWTYPE_STRING);
+
+    // 09 create VTypeAttributeRow and Label for JMSignalIsSender
+    myJMSignalIsSender = new VTypeAttributeRow(this, column, SUMO_ATTR_JM_SIGNAL_IS_SENDER, VTypeAttributeRow::RowAttrType::ROWTYPE_COMBOBOX, {"true", "false"});
+
+    // 10 create VTypeAttributeRow and Label for JMSignalPackLossProbVsDistRefsM
+    myJMSignalPackLossProbVsDistRefsM = new VTypeAttributeRow(this, column, SUMO_ATTR_JM_SIGNAL_PACK_LOSS_PROB_VS_DIST_REF_M, VTypeAttributeRow::RowAttrType::ROWTYPE_STRING);
+
+    // 11 create VTypeAttributeRow and Label for myJMSignalCommV2V2I
+    myJMSignalCommV2V2I = new VTypeAttributeRow(this, column, SUMO_ATTR_JM_SIGNAL_COMM_V2V_V2I, VTypeAttributeRow::RowAttrType::ROWTYPE_COMBOBOX, {"V2V", "V2I"});
+    //csy end
 }
 
 
@@ -980,6 +1026,26 @@ GNEVehicleTypeDialog::VTypeAttributes::buildJunctionModelAttributesB(FXVerticalF
 
     // 05 create VTypeAttributeRow and Label for Impatience
     myJMImpatience = new VTypeAttributeRow(this, column, SUMO_ATTR_IMPATIENCE, VTypeAttributeRow::RowAttrType::ROWTYPE_STRING);
+
+    //csy start
+    // 06 create VTypeAttributeRow and Label for JMVisualDistMaxM
+    myJMVisualDistMaxM = new VTypeAttributeRow(this, column, SUMO_ATTR_JM_VISUAL_DIST_MAX_M, VTypeAttributeRow::RowAttrType::ROWTYPE_STRING);
+
+    // 07 create VTypeAttributeRow and Label for JMVisualAngleBackRightDEG
+    myJMVisualAngleBackRightDEG = new VTypeAttributeRow(this, column, SUMO_ATTR_JM_VISUAL_ANGLES_BACK_RIGHT_DEG, VTypeAttributeRow::RowAttrType::ROWTYPE_STRING);
+
+    // 08 create VTypeAttributeRow and Label for JMVisualHasBSD
+    myJMVisualHasBSD = new VTypeAttributeRow(this, column, SUMO_ATTR_JM_VISUAL_HAS_BSD, VTypeAttributeRow::RowAttrType::ROWTYPE_COMBOBOX, {"true", "false"});
+
+    // 09 create VTypeAttributeRow and Label for JMSignalIsReceiver
+    myJMSignalIsReceiver = new VTypeAttributeRow(this, column, SUMO_ATTR_JM_SIGNAL_IS_RECEIVER, VTypeAttributeRow::RowAttrType::ROWTYPE_COMBOBOX, {"true", "false"});
+
+    // 10 create VTypeAttributeRow and Label for JMSignalPredErrProbVsTimeRefsS
+    myJMSignalPredErrProbVsTimeRefsS = new VTypeAttributeRow(this, column, SUMO_ATTR_JM_SIGNAL_PRED_ERR_PROB_VS_TIME_REF_S, VTypeAttributeRow::RowAttrType::ROWTYPE_STRING);
+
+    // 11 create VTypeAttributeRow and Label for myJMSignalTriggerTTC
+    myJMSignalTriggerTTC = new VTypeAttributeRow(this, column, SUMO_ATTR_JM_SIGNAL_TRIG_TTC, VTypeAttributeRow::RowAttrType::ROWTYPE_STRING);
+    //csy end
 }
 
 
@@ -1093,6 +1159,20 @@ GNEVehicleTypeDialog::VTypeAttributes::updateValues() {
     myJMSigmaMinor->updateValue();
     myJMTimeGapMinor->updateValue();
     myJMImpatience->updateValue();
+    //csy start
+    myJMVisualDistMaxM->updateValue();
+    myJMVisualDistMinM->updateValue();
+    myJMVisualAngleAheadVsSpeedRefsKMHDEG->updateValue();
+    myJMVisualAngleBackLeftDEG->updateValue();
+    myJMVisualAngleBackRightDEG->updateValue();
+    myJMVisualHasBSD->updateValue();
+    myJMSignalIsSender->updateValue();
+    myJMSignalIsReceiver->updateValue();
+    myJMSignalPackLossProbVsDistRefsM->updateValue();
+    myJMSignalPredErrProbVsTimeRefsS->updateValue();
+    myJMSignalTriggerTTC->updateValue();
+    myJMSignalCommV2V2I->updateValue();
+    //csy end
     // LCM Attributes
     myLCAStrategicParam->updateValue();
     myLCACooperativeParam->updateValue();
@@ -1186,6 +1266,20 @@ GNEVehicleTypeDialog::VTypeAttributes::onCmdSetAttribute(FXObject*, FXSelector, 
     myJMSigmaMinor->setVariable();
     myJMTimeGapMinor->setVariable();
     myJMImpatience->setVariable();
+    //csy start
+    myJMVisualDistMaxM->setVariable();
+    myJMVisualDistMinM->setVariable();
+    myJMVisualAngleAheadVsSpeedRefsKMHDEG->setVariable();
+    myJMVisualAngleBackLeftDEG->setVariable();
+    myJMVisualAngleBackRightDEG->setVariable();
+    myJMVisualHasBSD->setVariable();
+    myJMSignalIsSender->setVariable();
+    myJMSignalIsReceiver->setVariable();
+    myJMSignalPackLossProbVsDistRefsM->setVariable();
+    myJMSignalPredErrProbVsTimeRefsS->setVariable();
+    myJMSignalTriggerTTC->setVariable();
+    myJMSignalCommV2V2I->setVariable();
+    //csy end
     // LCM Attributes
     myLCAStrategicParam->setVariable();
     myLCACooperativeParam->setVariable();
@@ -1721,7 +1815,7 @@ GNEVehicleTypeDialog::CarFollowingModelParameters::onCmdSetVariable(FXObject*, F
 // ---------------------------------------------------------------------------
 
 GNEVehicleTypeDialog::GNEVehicleTypeDialog(GNEDemandElement* editedVehicleType, bool updatingElement) :
-    GNEDemandElementDialog(editedVehicleType, updatingElement, 1372, 575),
+    GNEDemandElementDialog(editedVehicleType, updatingElement, 1372, /*575*/720), // csy edited height
     myVehicleTypeValid(true),
     myInvalidAttr(SUMO_ATTR_NOTHING) {
 

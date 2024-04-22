@@ -1299,7 +1299,7 @@ MSPModel_Striping::addCrossingVehs(const MSLane* crossing, int stripes, double l
     bool hasCrossingVehObs = false;
     const MSLink* crossingExitLink = crossing->getLinkCont().front();
     gDebugFlag1 = DEBUGCOND2(crossing);
-    const MSLink::LinkLeaders linkLeaders = crossingExitLink->getLeaderInfo(nullptr, crossing->getLength());
+    const MSLink::LinkLeaders linkLeaders = crossingExitLink->getLeaderInfoCustom(nullptr, crossing->getLength());
     gDebugFlag1 = false;
     if (linkLeaders.size() > 0) {
         for (MSLink::LinkLeaders::const_iterator it = linkLeaders.begin(); it != linkLeaders.end(); ++it) {

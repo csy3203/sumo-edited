@@ -153,6 +153,11 @@ public:
         /// because a stop may have occurred within the last step.
         double myLastCoveredDist;
 
+        // csy start
+        /// the stored random value, between 0 and 1, updated every simulation step
+        double myRandStep;
+        // csy end
+
     };
 
 
@@ -401,6 +406,17 @@ public:
     inline double getBackPositionOnLane(const MSLane* lane) const {
         return getBackPositionOnLane(lane, false);
     }
+
+    // csy start
+    /// random seed for this vehicle in this simulation step
+    double getRandStep() const {
+        return myState.myRandStep;
+    }
+
+    void randStepUpdate() {
+        myState.myRandStep = RandHelper::rand();
+    }
+    // csy end
 
     /** @brief Get the vehicle's position relative to its current lane
      * @return The back position of the vehicle (in m from the current lane's begin)

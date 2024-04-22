@@ -1573,12 +1573,69 @@ SUMOVehicleParserHelper::parseJMParams(SUMOVTypeParameter* into, const SUMOSAXAt
         allowedJMAttrs.insert(SUMO_ATTR_JM_SIGMA_MINOR);
         allowedJMAttrs.insert(SUMO_ATTR_JM_STOPLINE_GAP);
         allowedJMAttrs.insert(SUMO_ATTR_JM_TIMEGAP_MINOR);
+        //csy start
+        allowedJMAttrs.insert(SUMO_ATTR_JM_VISUAL_DIST_MAX_M);
+        allowedJMAttrs.insert(SUMO_ATTR_JM_VISUAL_DIST_MIN_M);
+        allowedJMAttrs.insert(SUMO_ATTR_JM_VISUAL_ANGLES_BACK_LEFT_DEG);
+        allowedJMAttrs.insert(SUMO_ATTR_JM_VISUAL_ANGLES_BACK_RIGHT_DEG);
+        allowedJMAttrs.insert(SUMO_ATTR_JM_VISUAL_ANGLE_AHEAD_VS_SPEED_REF_KMH_DEG);
+        allowedJMAttrs.insert(SUMO_ATTR_JM_VISUAL_HAS_BSD);
+        allowedJMAttrs.insert(SUMO_ATTR_JM_SIGNAL_IS_SENDER);
+        allowedJMAttrs.insert(SUMO_ATTR_JM_SIGNAL_IS_RECEIVER);
+        allowedJMAttrs.insert(SUMO_ATTR_JM_SIGNAL_PACK_LOSS_PROB_VS_DIST_REF_M);
+        allowedJMAttrs.insert(SUMO_ATTR_JM_SIGNAL_PRED_ERR_PROB_VS_TIME_REF_S);
+        allowedJMAttrs.insert(SUMO_ATTR_JM_SIGNAL_TRIG_TTC);
+        allowedJMAttrs.insert(SUMO_ATTR_JM_SIGNAL_COMM_V2V_V2I);
+        //csy end
     }
     for (const auto& it : allowedJMAttrs) {
         if (attrs.hasAttribute(it)) {
             // first obtain  CFM attribute in string format
             bool ok = true;
             std::string parsedJMAttribute = attrs.get<std::string>(it, into->id.c_str(), ok);
+            //csy start
+            if (it == SUMO_ATTR_JM_VISUAL_HAS_BSD || it == SUMO_ATTR_JM_SIGNAL_IS_SENDER || it == SUMO_ATTR_JM_SIGNAL_IS_RECEIVER) {
+                try {
+                    // obtain JM attribute in bool format
+                    StringUtils::toBool(parsedJMAttribute);
+                    into->jmParameter[it] = parsedJMAttribute;
+                } catch (...) {
+                    into->jmParameter[it] = "false";
+                    WRITE_ERROR("Invalid Junction-Model Attribute " + toString(it) + ". Cannot be parsed to bool");
+                    
+                }
+                continue;
+            }
+            if (it == SUMO_ATTR_JM_SIGNAL_COMM_V2V_V2I) {
+                if (parsedJMAttribute == "V2V" || parsedJMAttribute == "V2I") {
+                    into->jmParameter[it] = parsedJMAttribute;
+                } else {
+                    into->jmParameter[it] = "V2V";
+                    WRITE_ERROR("Invalid Junction-Model Attribute " + toString(it) + ". Cannot be parsed to bool");
+                }
+                continue;
+            }
+            //parse parameter SUMO_ATTR_JM_VISUAL_ANGLE_AHEAD_VS_SPEED_REF_KMH_DEG
+            if (it == SUMO_ATTR_JM_VISUAL_ANGLE_AHEAD_VS_SPEED_REF_KMH_DEG) {
+                if(AngleRefs::can_parse(parsedJMAttribute)) {
+                    into->jmParameter[it] = parsedJMAttribute;
+                } else {
+                    ok = false;
+                    WRITE_ERROR("Invalid AngleRefs Item Input " + parsedJMAttribute + ". Use Format: v1,a1;v2,a2;...");
+                }
+                continue;
+            }
+            //parse parameter SUMO_ATTR_JM_SIGNAL_RECEIVER_PRED_ERR_PROB_VS_DIST_REF_M
+            if (it == SUMO_ATTR_JM_SIGNAL_PACK_LOSS_PROB_VS_DIST_REF_M || it == SUMO_ATTR_JM_SIGNAL_PRED_ERR_PROB_VS_TIME_REF_S) {
+                if(ErrProbRefs::can_parse(parsedJMAttribute)) {
+                    into->jmParameter[it] = parsedJMAttribute;
+                } else {
+                    ok = false;
+                    WRITE_ERROR("Invalid ErrProbRefs Item Input " + parsedJMAttribute + ". Use Format: d1,p1;d2,p2;...");
+                }
+                continue;
+            }
+            //csy end
             if (!ok) {
                 return false;
             }

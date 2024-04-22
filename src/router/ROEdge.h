@@ -438,6 +438,12 @@ public:
         double result = edge->getTravelTime(veh, time);
         // lower priority should result in higher effort (and the edge with
         // minimum priority receives a factor of myPriorityFactor
+        // csy start
+        // internal edges with priority 0 should not account for any penalty
+        if(edge->getFunction() != SumoXMLEdgeFunc::NORMAL) {
+            return result;
+        }
+        // csy end
         const double relativeInversePrio = 1 - ((edge->getPriority() - myMinEdgePriority) / myEdgePriorityRange);
         result *= 1 + relativeInversePrio * myPriorityFactor;
         return result;

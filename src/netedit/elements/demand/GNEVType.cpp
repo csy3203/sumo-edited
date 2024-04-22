@@ -23,6 +23,9 @@
 #include <netedit/changes/GNEChange_Attribute.h>
 #include <netedit/changes/GNEChange_DemandElement.h>
 #include <utils/emissions/PollutantsInterface.h>
+//csy start
+#include <utils/common/StringTokenizer.h>
+//csy end
 
 #include "GNEVType.h"
 #include "GNEVTypeDistribution.h"
@@ -241,6 +244,22 @@ GNEVType::getAttribute(SumoXMLAttr key) const {
         case SUMO_ATTR_JM_TIMEGAP_MINOR:
             // this JM has default values
             return getJMParamString(key, myTagProperty.getDefaultValue(key));
+        //csy start
+        case SUMO_ATTR_JM_VISUAL_DIST_MAX_M:
+        case SUMO_ATTR_JM_VISUAL_DIST_MIN_M:
+        case SUMO_ATTR_JM_VISUAL_ANGLES_BACK_LEFT_DEG:
+        case SUMO_ATTR_JM_VISUAL_ANGLES_BACK_RIGHT_DEG:
+        case SUMO_ATTR_JM_VISUAL_HAS_BSD:
+        case SUMO_ATTR_JM_SIGNAL_IS_SENDER:
+        case SUMO_ATTR_JM_SIGNAL_IS_RECEIVER:
+            return getJMParamString(key, myTagProperty.getDefaultValue(key));
+        case SUMO_ATTR_JM_VISUAL_ANGLE_AHEAD_VS_SPEED_REF_KMH_DEG:
+        case SUMO_ATTR_JM_SIGNAL_PACK_LOSS_PROB_VS_DIST_REF_M:
+        case SUMO_ATTR_JM_SIGNAL_PRED_ERR_PROB_VS_TIME_REF_S:
+        case SUMO_ATTR_JM_SIGNAL_TRIG_TTC:
+        case SUMO_ATTR_JM_SIGNAL_COMM_V2V_V2I:
+            return getJMParamString(key, myTagProperty.getDefaultValue(key));
+        //csy end
         case SUMO_ATTR_IMPATIENCE:
             if (wasSet(VTYPEPARS_IMPATIENCE_SET)) {
                 return toString(impatience);
@@ -619,6 +638,20 @@ GNEVType::setAttribute(SumoXMLAttr key, const std::string& value, GNEUndoList* u
         case SUMO_ATTR_JM_SIGMA_MINOR:
         case SUMO_ATTR_JM_TIMEGAP_MINOR:
         case SUMO_ATTR_IMPATIENCE:
+        //csy start
+        case SUMO_ATTR_JM_VISUAL_DIST_MAX_M:
+        case SUMO_ATTR_JM_VISUAL_DIST_MIN_M:
+        case SUMO_ATTR_JM_VISUAL_ANGLES_BACK_LEFT_DEG:
+        case SUMO_ATTR_JM_VISUAL_ANGLES_BACK_RIGHT_DEG:
+        case SUMO_ATTR_JM_VISUAL_ANGLE_AHEAD_VS_SPEED_REF_KMH_DEG:
+        case SUMO_ATTR_JM_VISUAL_HAS_BSD:
+        case SUMO_ATTR_JM_SIGNAL_IS_SENDER:
+        case SUMO_ATTR_JM_SIGNAL_IS_RECEIVER:
+        case SUMO_ATTR_JM_SIGNAL_PACK_LOSS_PROB_VS_DIST_REF_M:
+        case SUMO_ATTR_JM_SIGNAL_PRED_ERR_PROB_VS_TIME_REF_S:
+        case SUMO_ATTR_JM_SIGNAL_TRIG_TTC:
+        case SUMO_ATTR_JM_SIGNAL_COMM_V2V_V2I:
+        //csy end
         // LCM Attributes
         case SUMO_ATTR_LCA_STRATEGIC_PARAM:
         case SUMO_ATTR_LCA_COOPERATIVE_PARAM:
@@ -805,6 +838,63 @@ GNEVType::isValid(SumoXMLAttr key, const std::string& value) {
             return canParse<double>(value) && (parse<double>(value) >= 0);
         case SUMO_ATTR_IMPATIENCE:
             return canParse<double>(value) && (parse<double>(value) >= 0);
+        //csy start
+        case SUMO_ATTR_JM_VISUAL_DIST_MAX_M:
+            return canParse<double>(value);
+        case SUMO_ATTR_JM_VISUAL_DIST_MIN_M:
+            return canParse<double>(value);
+        case SUMO_ATTR_JM_VISUAL_ANGLES_BACK_LEFT_DEG:
+            return canParse<double>(value);
+        case SUMO_ATTR_JM_VISUAL_ANGLES_BACK_RIGHT_DEG:
+            return canParse<double>(value);
+        case SUMO_ATTR_JM_VISUAL_ANGLE_AHEAD_VS_SPEED_REF_KMH_DEG:
+            if (AngleRefs::can_parse(value)) {
+                return true;
+            } else {
+                return false;
+            }
+        case SUMO_ATTR_JM_VISUAL_HAS_BSD:
+            try {
+                StringUtils::toBool(value);
+                return true;
+            } catch(...) {
+                return false;
+            }
+        case SUMO_ATTR_JM_SIGNAL_IS_SENDER:
+            try{
+                StringUtils::toBool(value);
+                return true;
+            } catch(...) {
+                return false;
+            }
+        case SUMO_ATTR_JM_SIGNAL_IS_RECEIVER:
+            try {
+                StringUtils::toBool(value);
+                return true;
+            } catch(...) {
+                return false;
+            }
+        case SUMO_ATTR_JM_SIGNAL_PACK_LOSS_PROB_VS_DIST_REF_M:
+            if (ErrProbRefs::can_parse(value)) {
+                return true;
+            } else {
+                return false;
+            }
+        case SUMO_ATTR_JM_SIGNAL_PRED_ERR_PROB_VS_TIME_REF_S:
+            if (ErrProbRefs::can_parse(value)) {
+                return true;
+            } else {
+                return false;
+            }
+        case SUMO_ATTR_JM_SIGNAL_TRIG_TTC:
+            return canParse<double>(value);
+        case SUMO_ATTR_JM_SIGNAL_COMM_V2V_V2I:
+            if (value == "V2V" || value == "V2I") {
+                return true;
+            } else {
+                return false;
+            }
+        //csy end
         // LCM Attributes
         case SUMO_ATTR_LCA_STRATEGIC_PARAM:
         case SUMO_ATTR_LCA_COOPERATIVE_PARAM:
@@ -1155,6 +1245,44 @@ GNEVType::overwriteVType(GNEDemandElement* vType, const SUMOVTypeParameter newVT
     if (newVTypeParameter.wasSet(VTYPEPARS_IMPATIENCE_SET)) {
         vType->setAttribute(SUMO_ATTR_IMPATIENCE, toString(newVTypeParameter.impatience), undoList);
     }
+    //csy start
+    if (!newVTypeParameter.getJMParamString(SUMO_ATTR_JM_VISUAL_DIST_MAX_M, "").empty()) {
+        vType->setAttribute(SUMO_ATTR_JM_VISUAL_DIST_MAX_M, toString(newVTypeParameter.getJMParam(SUMO_ATTR_JM_VISUAL_DIST_MAX_M, 0)), undoList);
+    }
+    if (!newVTypeParameter.getJMParamString(SUMO_ATTR_JM_VISUAL_DIST_MIN_M, "").empty()) {
+        vType->setAttribute(SUMO_ATTR_JM_VISUAL_DIST_MIN_M, toString(newVTypeParameter.getJMParam(SUMO_ATTR_JM_VISUAL_DIST_MIN_M, 0)), undoList);
+    }
+    if (!newVTypeParameter.getJMParamString(SUMO_ATTR_JM_VISUAL_ANGLE_AHEAD_VS_SPEED_REF_KMH_DEG, "").empty()) {
+        vType->setAttribute(SUMO_ATTR_JM_VISUAL_ANGLE_AHEAD_VS_SPEED_REF_KMH_DEG, newVTypeParameter.getJMParamString(SUMO_ATTR_JM_VISUAL_ANGLE_AHEAD_VS_SPEED_REF_KMH_DEG, ""), undoList);
+    }
+    if (!newVTypeParameter.getJMParamString(SUMO_ATTR_JM_VISUAL_ANGLES_BACK_LEFT_DEG, "").empty()) {
+        vType->setAttribute(SUMO_ATTR_JM_VISUAL_ANGLES_BACK_LEFT_DEG, toString(newVTypeParameter.getJMParam(SUMO_ATTR_JM_VISUAL_ANGLES_BACK_LEFT_DEG, 0)), undoList);
+    }
+    if (!newVTypeParameter.getJMParamString(SUMO_ATTR_JM_VISUAL_ANGLES_BACK_RIGHT_DEG, "").empty()) {
+        vType->setAttribute(SUMO_ATTR_JM_VISUAL_ANGLES_BACK_RIGHT_DEG, toString(newVTypeParameter.getJMParam(SUMO_ATTR_JM_VISUAL_ANGLES_BACK_RIGHT_DEG, 0)), undoList);
+    }
+    if (!newVTypeParameter.getJMParamString(SUMO_ATTR_JM_VISUAL_HAS_BSD, "").empty()) {
+        vType->setAttribute(SUMO_ATTR_JM_VISUAL_HAS_BSD, toString(newVTypeParameter.getJMParamString(SUMO_ATTR_JM_VISUAL_HAS_BSD, "")), undoList);
+    }
+    if (!newVTypeParameter.getJMParamString(SUMO_ATTR_JM_SIGNAL_IS_SENDER, "").empty()) {
+        vType->setAttribute(SUMO_ATTR_JM_SIGNAL_IS_SENDER, toString(newVTypeParameter.getJMParamString(SUMO_ATTR_JM_SIGNAL_IS_SENDER, "")), undoList);
+    }
+    if (!newVTypeParameter.getJMParamString(SUMO_ATTR_JM_SIGNAL_IS_RECEIVER, "").empty()) {
+        vType->setAttribute(SUMO_ATTR_JM_SIGNAL_IS_RECEIVER, toString(newVTypeParameter.getJMParamString(SUMO_ATTR_JM_SIGNAL_IS_RECEIVER, "")), undoList);
+    }
+    if (!newVTypeParameter.getJMParamString(SUMO_ATTR_JM_SIGNAL_PACK_LOSS_PROB_VS_DIST_REF_M, "").empty()) {
+        vType->setAttribute(SUMO_ATTR_JM_SIGNAL_PACK_LOSS_PROB_VS_DIST_REF_M, newVTypeParameter.getJMParamString(SUMO_ATTR_JM_SIGNAL_PACK_LOSS_PROB_VS_DIST_REF_M, ""), undoList);
+    }
+    if (!newVTypeParameter.getJMParamString(SUMO_ATTR_JM_SIGNAL_PRED_ERR_PROB_VS_TIME_REF_S, "").empty()) {
+        vType->setAttribute(SUMO_ATTR_JM_SIGNAL_PRED_ERR_PROB_VS_TIME_REF_S, newVTypeParameter.getJMParamString(SUMO_ATTR_JM_SIGNAL_PRED_ERR_PROB_VS_TIME_REF_S, ""), undoList);
+    }
+    if (!newVTypeParameter.getJMParamString(SUMO_ATTR_JM_SIGNAL_TRIG_TTC, "").empty()) {
+        vType->setAttribute(SUMO_ATTR_JM_SIGNAL_TRIG_TTC, toString(newVTypeParameter.getJMParam(SUMO_ATTR_JM_SIGNAL_TRIG_TTC, 0)), undoList);
+    }
+    if (!newVTypeParameter.getJMParamString(SUMO_ATTR_JM_SIGNAL_COMM_V2V_V2I, "").empty()) {
+        vType->setAttribute(SUMO_ATTR_JM_SIGNAL_COMM_V2V_V2I, toString(newVTypeParameter.getJMParamString(SUMO_ATTR_JM_SIGNAL_COMM_V2V_V2I, "")), undoList);
+    }
+    //csy end
     // LCM values
     if (!newVTypeParameter.getLCParamString(SUMO_ATTR_LCA_STRATEGIC_PARAM, "").empty()) {
         vType->setAttribute(SUMO_ATTR_LCA_STRATEGIC_PARAM, toString(newVTypeParameter.getLCParam(SUMO_ATTR_LCA_STRATEGIC_PARAM, 0)), undoList);
@@ -1526,6 +1654,12 @@ GNEVType::setAttribute(SumoXMLAttr key, const std::string& value) {
         case SUMO_ATTR_JM_IGNORE_FOE_SPEED:
         case SUMO_ATTR_JM_SIGMA_MINOR:
         case SUMO_ATTR_JM_TIMEGAP_MINOR:
+        //csy start
+        case SUMO_ATTR_JM_VISUAL_DIST_MAX_M:
+        case SUMO_ATTR_JM_VISUAL_DIST_MIN_M:
+        case SUMO_ATTR_JM_VISUAL_ANGLES_BACK_LEFT_DEG:
+        case SUMO_ATTR_JM_VISUAL_ANGLES_BACK_RIGHT_DEG:
+        //csy end
             // empty values means that value isn't set
             if (value.empty()) {
                 const auto it = jmParameter.find(key);
@@ -1548,6 +1682,114 @@ GNEVType::setAttribute(SumoXMLAttr key, const std::string& value) {
                 parametersSet &= ~VTYPEPARS_IMPATIENCE_SET;
             }
             break;
+        //csy start
+        case SUMO_ATTR_JM_VISUAL_ANGLE_AHEAD_VS_SPEED_REF_KMH_DEG:
+            if (value.empty()) {
+                const auto it = jmParameter.find(key);
+                if (it != jmParameter.end()) {
+                    jmParameter.erase(it);
+                }
+            } else if (!AngleRefs::can_parse(value)) {
+                WRITE_ERROR("Invalid Velocity/Angle Value " + value + ". Cannot be parsed to seq of float");
+            } else {
+                jmParameter[key] = value;
+            }
+            break;
+        case SUMO_ATTR_JM_VISUAL_HAS_BSD:
+            if (value.empty()) {
+                const auto it = jmParameter.find(key);
+                if (it != jmParameter.end()) {
+                    jmParameter.erase(it);
+                }
+            } else {
+                try {
+                    StringUtils::toBool(value);
+                    jmParameter[key] = value;
+                } catch(...) {
+                    WRITE_ERROR("Invalid HasBSD Value " + value + ". Cannot be parsed to bool");
+                }
+            }
+            break;
+        case SUMO_ATTR_JM_SIGNAL_IS_SENDER:
+            if (value.empty()) {
+                const auto it = jmParameter.find(key);
+                if (it !=jmParameter.end()) {
+                    jmParameter.erase(it);
+                }
+            } else {
+                try {
+                    StringUtils::toBool(value);
+                    jmParameter[key] = value;
+                } catch(...) {
+                    WRITE_ERROR("Invalid IsSender Value " + value + ". Cannot be parsed to bool");
+                }
+            }
+            break;
+        case SUMO_ATTR_JM_SIGNAL_IS_RECEIVER:
+            if (value.empty()) {
+                const auto it = jmParameter.find(key);
+                if (it !=jmParameter.end()) {
+                    jmParameter.erase(it);
+                }
+            } else {
+                try {
+                    StringUtils::toBool(value);
+                    jmParameter[key] = value;
+                } catch(...) {
+                    WRITE_ERROR("Invalid IsReceiver Value " + value + ". Cannot be parsed to bool");
+                }
+            }
+            break;
+        case SUMO_ATTR_JM_SIGNAL_PACK_LOSS_PROB_VS_DIST_REF_M:
+            if (value.empty()) {
+                const auto it = jmParameter.find(key);
+                if (it != jmParameter.end()) {
+                    jmParameter.erase(it);
+                }
+            } else if (!ErrProbRefs::can_parse(value)) {
+                WRITE_ERROR("Invalid Distance/Probability Value " + value + ". Cannot be parsed to seq of float");
+            } else {
+                jmParameter[key] = value;
+            }
+            break;
+        case SUMO_ATTR_JM_SIGNAL_PRED_ERR_PROB_VS_TIME_REF_S:
+            if (value.empty()) {
+                const auto it = jmParameter.find(key);
+                if (it != jmParameter.end()) {
+                    jmParameter.erase(it);
+                }
+            } else if (!ErrProbRefs::can_parse(value)) {
+                WRITE_ERROR("Invalid Time/Probability Value " + value + ". Cannot be parsed to seq of float");
+            } else {
+                jmParameter[key] = value;
+            }
+            break;
+        case SUMO_ATTR_JM_SIGNAL_TRIG_TTC:
+            // empty values means that value isn't set
+            if (value.empty()) {
+                const auto it = jmParameter.find(key);
+                if (it != jmParameter.end()) {
+                    jmParameter.erase(it);
+                }
+            } else {
+                jmParameter[key] = value;
+            }
+            break;
+        case SUMO_ATTR_JM_SIGNAL_COMM_V2V_V2I:
+            if (value.empty()) {
+                const auto it = jmParameter.find(key);
+                if (it !=jmParameter.end()) {
+                    jmParameter.erase(it);
+                }
+            } else {
+                if (value == "V2V" || value == "V2I") {
+                    jmParameter[key] = value;
+                } else {
+                    jmParameter[key] = "V2V";
+                }
+            }
+            break;
+        //csy end
         // LCM Attributes
         case SUMO_ATTR_LCA_STRATEGIC_PARAM:
         case SUMO_ATTR_LCA_COOPERATIVE_PARAM:

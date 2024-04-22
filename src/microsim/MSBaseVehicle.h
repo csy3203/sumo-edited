@@ -98,6 +98,14 @@ public:
         return true;
     }
 
+    // csy start
+    /** @brief Return random seed for this vehicle in this simulation step
+    */
+    double getRandStep() const{
+        return RandHelper::rand(getRNG());
+    }
+    // csy end
+
     /// @brief set the id (inherited from Named but forbidden for vehicles)
     void setID(const std::string& newID);
 

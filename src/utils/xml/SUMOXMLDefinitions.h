@@ -932,6 +932,20 @@ enum SumoXMLAttr {
     SUMO_ATTR_JM_TIMEGAP_MINOR,
     SUMO_ATTR_JM_IGNORE_IDS,
     SUMO_ATTR_JM_IGNORE_TYPES,
+    //csy start
+    SUMO_ATTR_JM_VISUAL_DIST_MAX_M, // maximum visual distance (meter) at junction interacting with foe objects
+    SUMO_ATTR_JM_VISUAL_DIST_MIN_M, // minimum visual distance (meter) at junction interacting with foe objects
+    SUMO_ATTR_JM_VISUAL_ANGLES_BACK_LEFT_DEG, // left visual angels (degree) backward through mirror, single value
+    SUMO_ATTR_JM_VISUAL_ANGLES_BACK_RIGHT_DEG, // left visual angels (degree) backward through mirror, single value
+    SUMO_ATTR_JM_VISUAL_ANGLE_AHEAD_VS_SPEED_REF_KMH_DEG, // reference visual angle (degree) w.r.t. speeds (km/h) format: (v1,a1;v2,a2;...;vn,an)
+    SUMO_ATTR_JM_VISUAL_HAS_BSD, // whether the vehicle is equipped with blind spot detector, single boolean value (true or false)
+    SUMO_ATTR_JM_SIGNAL_IS_SENDER, // whether the vehicle is a wireless signal sender
+    SUMO_ATTR_JM_SIGNAL_IS_RECEIVER, // whether the vehicle is a wireless receiver
+    SUMO_ATTR_JM_SIGNAL_PACK_LOSS_PROB_VS_DIST_REF_M, // reference packet loss probability w.r.t. distance (meter) format: (d1,p1;d2,p2;...;dn,pn)
+    SUMO_ATTR_JM_SIGNAL_PRED_ERR_PROB_VS_TIME_REF_S, // reference prediction error probability w.r.t. time (second) format: (t1,p1;t2,p2;...;tn,pn)
+    SUMO_ATTR_JM_SIGNAL_TRIG_TTC, // the TTC threshold that triggers the warning system
+    SUMO_ATTR_JM_SIGNAL_COMM_V2V_V2I, // option: communication is between two vehicle (VBS/BPTV) or vehicle and intersection (INS)
+    //csy end
     /// @}
 
     /// @name route alternatives / distribution attributes

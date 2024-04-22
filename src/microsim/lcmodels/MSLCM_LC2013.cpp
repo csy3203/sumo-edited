@@ -1795,6 +1795,14 @@ MSLCM_LC2013::_wantsChange(
                 && neighDist / MAX2(.1, myVehicle.getSpeed()) > 20.) { //./MAX2( .1, myVehicle.getSpeed())) { // -.1
             req = ret | lca | LCA_SPEEDGAIN;
             if (!cancelRequest(req, laneOffset)) {
+                //csy start
+                const double remainingSeconds = ((ret & LCA_TRACI) == 0 ? MAX2((double)STEPS2TIME(TS), 10.0) : myVehicle.getInfluencer().changeRequestRemainingSeconds(currentTime));
+                const double plannedSpeed = informLeader(msgPass, blocked, myLca, neighLead, remainingSeconds);
+                if (plannedSpeed >= 0) {
+                	// maybe we need to deal with a blocking follower
+                	informFollower(msgPass, blocked, myLca, neighFollow, remainingSeconds, (plannedSpeed < myVehicle.getSpeed() ? plannedSpeed : myVehicle.getSpeed()));
+                }
+             	//csy end
                 return ret | req;
             }
         }
@@ -1842,6 +1850,14 @@ MSLCM_LC2013::_wantsChange(
                 && neighDist / MAX2(.1, myVehicle.getSpeed()) > 20.) { // .1
             req = ret | lca | LCA_SPEEDGAIN;
             if (!cancelRequest(req, laneOffset)) {
+                //csy start
+                const double remainingSeconds = ((ret & LCA_TRACI) == 0 ? MAX2((double)STEPS2TIME(TS), 10.0) : myVehicle.getInfluencer().changeRequestRemainingSeconds(currentTime));
+                const double plannedSpeed = informLeader(msgPass, blocked, myLca, neighLead, remainingSeconds);
+                if (plannedSpeed >= 0) {
+                	// maybe we need to deal with a blocking follower
+                	informFollower(msgPass, blocked, myLca, neighFollow, remainingSeconds, (plannedSpeed < myVehicle.getSpeed() ? plannedSpeed : myVehicle.getSpeed()));
+                }
+             	//csy end
                 return ret | req;
             }
         }

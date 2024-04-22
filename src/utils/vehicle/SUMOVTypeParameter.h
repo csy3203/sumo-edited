@@ -29,6 +29,10 @@
 #include <utils/common/SUMOTime.h>
 #include <utils/common/SUMOVehicleClass.h>
 #include <utils/distribution/Distribution_Parameterized.h>
+//csy start
+#include <utils/shapes/Visual.h>
+#include <utils/shapes/Signal.h>
+//csy end
 
 // ===========================================================================
 // class declarations

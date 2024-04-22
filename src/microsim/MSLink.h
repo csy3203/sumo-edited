@@ -553,6 +553,18 @@ public:
      */
     const LinkLeaders getLeaderInfo(const MSVehicle* ego, double dist, std::vector<const MSPerson*>* collectBlockers = 0, bool isShadowLink = false) const;
 
+    // csy start
+    /** @brief Returns all potential link leaders (vehicles on foeLanes), cutom defined to replace
+     * Valid during the planMove() phase
+     * @param[in] ego The ego vehicle that is looking for leaders
+     * @param[in] dist The distance of the vehicle who is asking about the leader to this link
+     * @param[out] blocking Return blocking pedestrians if a vector is given
+     * @param[in] isShadowLink whether this link is a shadowLink for ego
+     * @return The all vehicles on foeLanes and their (virtual) distances to the asking vehicle
+     */
+    const LinkLeaders getLeaderInfoCustom(const MSVehicle* ego, double dist, std::vector<const MSPerson*>* collectBlockers = 0, bool isShadowLink = false) const;
+    // csy end
+
     /// @brief return the speed at which ego vehicle must approach the zipper link
     double getZipperSpeed(const MSVehicle* ego, const double dist, double vSafe,
                           SUMOTime arrivalTime,
@@ -680,6 +692,26 @@ private:
 
     /// @brief whether the given person is in front of the car
     bool isInFront(const MSVehicle* ego, const PositionVector& egoPath, const Position& pPos) const;
+
+    //csy start
+    /// @brief check for persons on walkingarea in the path of ego vehicle
+    void checkWalkingAreaFoeCustom(const MSVehicle* ego, const MSLane* foeLane, std::vector<const MSPerson*>* collectBlockers, LinkLeaders& result) const;
+    
+    /// @brief whether a foe object (vehicle or person) is in the blind regions
+    bool isInBlind(const SUMOTrafficObject* ego, const SUMOTrafficObject* foe) const;
+
+    /// @brief whether a foe object is covered by the blind spot detector
+    bool isInBSD(const SUMOTrafficObject* ego, const SUMOTrafficObject* foe) const;
+
+    /// @brief whether the signal sent by a foe object is received by ego
+    bool isSignalReceived(const SUMOTrafficObject* ego, const SUMOTrafficObject* foe, double dist) const;
+
+    /// @brief whether the potential conflict with foe object detected via wireless signal is predicted
+    bool isConflictPredicted(const SUMOTrafficObject* ego, const SUMOTrafficObject* foe, double time2junction) const;
+
+    /// @brief check whether the potential foe vehicle should be ignored
+    bool isFoePerceived(const SUMOTrafficObject* ego, const SUMOTrafficObject* foe, double egoTTC, double egoDTC, double foeTTC) const;
+    //csy end
 
     /// @brief whether the given person is walking towards the car
     bool isOnComingPed(const MSVehicle* ego, const MSPerson* p) const;

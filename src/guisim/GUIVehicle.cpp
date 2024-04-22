@@ -920,7 +920,7 @@ GUIVehicle::selectBlockingFoes() const {
 #ifdef DEBUG_FOES
         gDebugFlag1 = true;
 #endif
-        const MSLink::LinkLeaders linkLeaders = (dpi.myLink)->getLeaderInfo(this, dist, &blockingPersons);
+        const MSLink::LinkLeaders linkLeaders = (dpi.myLink)->getLeaderInfoCustom(this, dist, &blockingPersons);
 #ifdef DEBUG_FOES
         gDebugFlag1 = false;
 #endif

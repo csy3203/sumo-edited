@@ -199,5 +199,11 @@ public:
     /// @brief whether this object is selected in the GUI
     virtual bool isSelected() const = 0;
 
+    // csy start
+    /** @brief Return random seed for this vehicle in this simulation step
+    */
+    virtual double getRandStep() const = 0;
+    // csy end
+
 
 };
