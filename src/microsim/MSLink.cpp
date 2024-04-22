@@ -2359,15 +2359,17 @@ MSLink::isInBSD(const SUMOTrafficObject* ego, const SUMOTrafficObject* foe) cons
     const double foeAngleLeft = pLeft.angleTo2D(foe->getPosition());
     const double foeAngleRight = pRight.angleTo2D(foe->getPosition());
     const double distMinAhead = ego->getVehicleType().getParameter().getJMParam(SUMO_ATTR_JM_VISUAL_DIST_MIN_M, 0) > 0 ? ego->getVehicleType().getParameter().getJMParam(SUMO_ATTR_JM_VISUAL_DIST_MAX_M, 0) : 0;
+    const double width_ego = ego->getVehicleType().getParameter().width;
+    const double width_foe = ego->getVehicleType().getParameter().width;
     if(fabs(GeomHelper::angleDiff(ego->getAngle(), foeAngleCenter)) <= DEG2RAD(180) / 2 && dist <= distMinAhead) {
         isInFront = true;
     }
     const double angleLeft = GeomHelper::angleDiff(ego->getAngle(), foeAngleLeft);
-    if(angleLeft >= DEG2RAD(90) && dist <= 4) {
+    if(angleLeft >= DEG2RAD(90) && dist <= 3 + (width_ego + width_foe) / 2) {
         isInLeftBack = true;
     }
     const double angleRight = GeomHelper::angleDiff(foeAngleRight, ego->getAngle());
-    if(angleRight >= DEG2RAD(90) && dist <= 4) {
+    if(angleRight >= DEG2RAD(90) && dist <= 3 + (width_ego + width_foe) / 2) {
         isInRightBack = true;
     }
     return isInFront || isInLeftBack || isInRightBack;
